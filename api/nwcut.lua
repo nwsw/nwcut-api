@@ -7,15 +7,15 @@
 --
 --		-- we want to work with high level nwcItem objects in this script
 --		nwcut.setlevel(2)
---		
+--
 --		for item in nwcut.items() do
 --			local c = item:GetNum('Color')
---		
+--
 --			if (not c) or (c == 0) then
 --				item:Provide("Color")
 --				item.Opts.Color = 4
 --			end
---		
+--
 --			nwcut.writeline(item)
 --		end
 --
@@ -38,7 +38,7 @@
 -- * @{#nwcut.const.rc_Success}
 -- * @{#nwcut.const.rc_Report}
 -- * @{#nwcut.const.rc_Error}
--- 
+--
 -- This field contains the return status code that will be used by NWC in determining how process any output from the user tool.
 -- By default, in the absence of any errors, NWC will process the user tool output as a replacement clip or file. This behavior
 -- can be changed by assigning one of the **nwcut.const** constants.
@@ -61,7 +61,7 @@
 -- Retrieves the next item from the NWC clip text input.
 -- This function opens the clip text input stream and returns the next notation
 -- object as a single line of text.
--- 
+--
 -- @function [parent=#nwcut] getitem
 -- @return nwcItem#nwcItem When the @{#nwcut.setlevel} property is set to 1 or more, a nwcItem object is returned for each line of clip text
 -- @return #string When the @{#nwcut.setlevel} property is 0, each raw line of clip text is returned
@@ -69,18 +69,26 @@
 -------------------------------------
 -- NWC Clip Text item iterator.
 -- Opens the clip text input stream and returns an iterator function that
--- returns a new notation object represented as a line of text. The 
+-- returns a new notation object represented as a line of text. The
 -- construct:
--- 
+--
 --		for item in nwcut.items() do
 --			*body*
 --		end
--- 
+--
 -- will iterate over all clip text items. When the iterator function detects
 -- the end of the clip text items, it returns nil (to finish the loop).
--- 
+--
 -- @function [parent=#nwcut] items
 -- @return an iterator for cycling through NWC text (see @{#nwcut.getitem})
+
+-------------------------------------
+-- Loads a NWC file into a @{#nwcFile} object instance.
+-- This will load the file text input stream into a @{#nwcFile} object
+-- instance.
+--
+-- @function [parent=#nwcut] loadFile
+-- @return #nwcFile An object collection representing everything in the file
 
 -------------------------------------
 -- Retrieves a property of the current user tool environment.
@@ -182,7 +190,7 @@
 -------------------------------------
 -- nwcut output warning text.
 -- Writes the value of each of its arguments to the standard error stream.
--- The arguments must be strings or numbers. To write other values, use 
+-- The arguments must be strings or numbers. To write other values, use
 -- `tostring` or `string.format`.
 -- @function [parent=#nwcut] warn
 -- @param ... must be strings or a numbers.
@@ -198,24 +206,23 @@
 
 -------------------------------------
 -- nwcut question box.
--- Prompts the user with a standard message box. The user is given the 
+-- Prompts the user with a standard message box. The user is given the
 -- opportunity to answer the question, or cancel the user tool.
 -- @function [parent=#nwcut] askbox
 -- @param msg the message text to issue to the user
 -- @param msgtitle the title for the message box (optional)
--- @param #number flags assigns the default action, 1 for Yes (default),
---  and 2 for No
--- @return #number the answer, 1 for Yes, and 2 for No
+-- @param #number flags assigns the default action, 1 for Yes (default), and 2 for No
+-- @return #number the answer, 1 for Yes, and 0 for No
 
 -------------------------------------
 -- nwcut user prompt.
--- Prompts the user for additional information. The user is given the 
+-- Prompts the user for additional information. The user is given the
 -- opportunity to respond to the prompt, or cancel the user tool.
 -- @function [parent=#nwcut] prompt
 -- @param msg the message text to issue to the user
 -- @param datatype What kind of control/data is expected (optional, default="*").
 -- Supported types are:
--- 
+--
 -- * "*" indicates a text response
 -- * "#" indicates a numeric/integer response; the range can be specified in brackets (e.g. "#[-2,5]" supports values from -2 through 5)
 -- * "|" indicates a list of items, each separated by a vertical bar (e.g. "|Note|Bar|Rest" contains a list of three elements)
@@ -249,5 +256,83 @@
 -- @field opt_Associative Object field contains associative data (see @{#nwcut.ClassifyOptTag})
 -- @field opt_NotePos Object field contains note position data (see @{#nwcut.ClassifyOptTag})
 
+
+-------------------------------------------------------------------------------
+-- nwcStaff object.
+-- The nwcStaff object is used to encapsulate a NWC staff. The data is kept
+-- in fields that match the nwctxt source lines. For example, the @{#nwcStaff.AddStaff} 
+-- object contains the staff's *Name* and *Group* properties.
+--
+-- @type nwcStaff
+-- @field nwcItem#nwcItem AddStaff This contains the nwctxt AddStaff properties
+-- @field nwcItem#nwcItem StaffProperties This contains the nwctxt StaffProperties
+-- @field nwcItem#nwcItem StaffInstrument This contains the nwctxt StaffInstrument config
+-- @field nwcItem#nwcItem Lyrics This contains the nwctxt Lyrics config
+-- @field nwcItem#list_nwcItem Lyric This contains a list of lyric lines found in the staff, each as a @{nwcItem#nwcItem}
+-- @field nwcItem#list_nwcItem Items This is a list of the @{nwcItem#nwcItem} notation items found in the staff, which includes notes, bars, and signatures.
+
+----
+-- nwcStaff constructor.
+-- Returns an object representation of a NWC staff.
+-- @function [parent=#nwcStaff] new
+-- @return #nwcStaff an object representation of a NWC staff.
+
+----
+-- nwcStaff add a line of nwctxt to the staff.
+-- @function [parent=#nwcStaff] add
+-- @param #nwcStaff self nwcStaff object
+-- @param nwcItem#nwcItem item to add
+
+----
+-- nwcStaff output function which generates a nwctxt representation.
+-- Writes an object representation of a NWC staff.
+-- @function [parent=#nwcStaff] save
+-- @param #nwcStaff self nwcStaff object
+-- @param #function writeln function used to write the nwctxt data
+
+----
+-- @type list_nwcStaff
+-- @list <#nwcStaff>
+
+-------------------------------------------------------------------------------
+-- nwcFile object.
+-- The nwcFile object is used to encapsulate a NWC file. The data is kept
+-- in fields that match the nwctxt source lines. For example, the @{#nwcFile.SongInfo} 
+-- object contains the file's *Title*, *Author*, and *Copyright* text.
+--
+-- @type nwcFile
+-- @field nwcItem#nwcItem Editor This contains the nwctxt Editor properties
+-- @field nwcItem#nwcItem SongInfo This contains the nwctxt SongInfo properties
+-- @field nwcItem#nwcItem PgSetup This contains the nwctxt PgSetup properties
+-- @field nwcItem#nwcItem PgMargins This contains the nwctxt PgMargins properties
+-- @field nwcItem#map_nwcItem Font This contains a table map of Font entries. Each entry is mapped by its *Style* name, and stored as a @{nwcItem#nwcItem}
+-- @field #list_nwcStaff Staff This is a list of the @{#nwcStaff} objects contained in the file.
+
+----
+-- nwcFile constructor.
+-- Returns an object representation of a NWCTXT file.
+-- @function [parent=#nwcFile] new
+-- @return #nwcFile an object representation of a NWCTXT file.
+
+----
+-- nwcFile load function.
+-- Loads an object representation of a NWC clip or file.
+-- @function [parent=#nwcFile] load
+-- @param #nwcFile self nwcFile object
+-- @param #function itemIterator Item iterator function used to receive the nwctxt data
+
+----
+-- nwcFile save function which generates a nwctxt representation.
+-- Writes an object representation of a NWC clip or file.
+-- @function [parent=#nwcFile] save
+-- @param #nwcFile self nwcFile object
+-- @param #function writeln function used to write the nwctxt data
+
+----
+-- nwcFile getSelection function returns the staff and index range for the editor selection.
+-- This function assumes an empty selection should be treated as though the entire contents of the staff is selected.
+-- @function [parent=#nwcFile] getSelection
+-- @param #nwcFile self nwcFile object
+-- @return #nwcStaff,#number,#number the active staff and selection range from left to right.
 
 return nil

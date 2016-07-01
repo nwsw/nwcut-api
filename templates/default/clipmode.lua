@@ -16,9 +16,8 @@ nwcut.setlevel(2)
 for item in nwcut.items() do
 	local c = item:GetNum('Color')
 
-	if not c then
-		item:Provide("Color",4)
-	elseif c == 0 then
+	if (not c) or (c == 0) then
+		item:Provide("Color")
 		item.Opts.Color = 4
 	end
 
