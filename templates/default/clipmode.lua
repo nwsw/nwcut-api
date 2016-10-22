@@ -5,21 +5,19 @@ This sample turns all items with a default color to "Highlight 4"
 $NWCUT$CONFIG: ClipText $
 --]]-------------------------------------------------------------------------
 
--- uncomment the next line to review your script's input and output within NWC
--- nwcut.status = nwcut.const.rc_Report
+local changed = 0
 
-assert(nwcut.getprop("Mode") == nwcut.const.mode_ClipText,"Invalid input mode...this tool requires single staff clip text")
-
--- we want to work with high level nwcItem objects in this script
-nwcut.setlevel(2)
-
-for item in nwcut.items() do
-	local c = item:GetNum('Color')
-
-	if (not c) or (c == 0) then
-		item:Provide("Color")
-		item.Opts.Color = 4
+-- Set color to highlight 4 for all items that use default color
+local function filterProc(item)
+	if item:IsFake() then return end
+	if (item:GetNum('Color') or 0) == 0 then
+		item:Set('Color',4)
+		changed = changed+1
 	end
-
-	nwcut.writeline(item)
 end
+
+nwcut.loadFile()
+	:forSelection(filterProc)
+	:save()
+
+nwcut.warn(('Change count: %d'):format(changed))

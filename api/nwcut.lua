@@ -3,25 +3,25 @@
 -- The nwcut library provides function for NWC clip text manipulation.
 --
 -- ## Getting Started
--- A typical user tool is constructed as shown below.
+-- A simple user tool is shown below:
 --
---		-- we want to work with high level nwcItem objects in this script
---		nwcut.setlevel(2)
---
---		for item in nwcut.items() do
---			local c = item:GetNum('Color')
---
---			if (not c) or (c == 0) then
---				item:Provide("Color")
---				item.Opts.Color = 4
+--		-- Set color to highlight 4 for all items that use default color
+--		local function filterProc(item)
+--			if item:IsFake() then return end
+--			if (item:GetNum('Color') or 0) == 0 then
+--				item:Set('Color',4)
 --			end
---
---			nwcut.writeline(item)
 --		end
+--
+--		nwcut.loadFile()
+--			:forSelection(filterProc)
+--			:save()
 --
 -- ## Some Important Object Types
 --
 -- * @{nwcut}: Contains the essential utilities that are used by the various support classes.
+-- * @{nwcFile}: Class for storing user tool input (can store a clip or a whole work).
+-- * @{nwcStaff}: Class for storing each staff.
 -- * @{nwcItem}: The primary object class for storing NWC items.
 -- * @{nwcPlayContext}: An object class for tracking staff play back context, which is helpful in calculating note names, bar counts, etc.
 -- * @{nwcNotePos}: A note position class that tracks the position, accidental, notehead, and other styles for each note
@@ -50,6 +50,14 @@
 --
 -- @function [parent=#nwcut] nwcversion
 -- @return #string A string describing the host NWC program release version
+
+-------------------------------------
+-- Returns the current object's class name ID, or its simple type.
+--
+-- @function [parent=#nwcut] typeOf
+-- @param obj A nwcut object instance.
+-- @return #string A string describing the object's class type, which will be its class name or its simple type
+
 
 -------------------------------------
 -- Returns the approximate number of CPU seconds used by the script.
@@ -88,7 +96,7 @@
 -- instance.
 --
 -- @function [parent=#nwcut] loadFile
--- @return #nwcFile An object collection representing everything in the file
+-- @return nwcFile#nwcFile An object collection representing everything in the file
 
 -------------------------------------
 -- Retrieves a property of the current user tool environment.
@@ -255,84 +263,5 @@
 -- @field opt_List Object field contains list data (see @{#nwcut.ClassifyOptTag})
 -- @field opt_Associative Object field contains associative data (see @{#nwcut.ClassifyOptTag})
 -- @field opt_NotePos Object field contains note position data (see @{#nwcut.ClassifyOptTag})
-
-
--------------------------------------------------------------------------------
--- nwcStaff object.
--- The nwcStaff object is used to encapsulate a NWC staff. The data is kept
--- in fields that match the nwctxt source lines. For example, the @{#nwcStaff.AddStaff} 
--- object contains the staff's *Name* and *Group* properties.
---
--- @type nwcStaff
--- @field nwcItem#nwcItem AddStaff This contains the nwctxt AddStaff properties
--- @field nwcItem#nwcItem StaffProperties This contains the nwctxt StaffProperties
--- @field nwcItem#nwcItem StaffInstrument This contains the nwctxt StaffInstrument config
--- @field nwcItem#nwcItem Lyrics This contains the nwctxt Lyrics config
--- @field nwcItem#list_nwcItem Lyric This contains a list of lyric lines found in the staff, each as a @{nwcItem#nwcItem}
--- @field nwcItem#list_nwcItem Items This is a list of the @{nwcItem#nwcItem} notation items found in the staff, which includes notes, bars, and signatures.
-
-----
--- nwcStaff constructor.
--- Returns an object representation of a NWC staff.
--- @function [parent=#nwcStaff] new
--- @return #nwcStaff an object representation of a NWC staff.
-
-----
--- nwcStaff add a line of nwctxt to the staff.
--- @function [parent=#nwcStaff] add
--- @param #nwcStaff self nwcStaff object
--- @param nwcItem#nwcItem item to add
-
-----
--- nwcStaff output function which generates a nwctxt representation.
--- Writes an object representation of a NWC staff.
--- @function [parent=#nwcStaff] save
--- @param #nwcStaff self nwcStaff object
--- @param #function writeln function used to write the nwctxt data
-
-----
--- @type list_nwcStaff
--- @list <#nwcStaff>
-
--------------------------------------------------------------------------------
--- nwcFile object.
--- The nwcFile object is used to encapsulate a NWC file. The data is kept
--- in fields that match the nwctxt source lines. For example, the @{#nwcFile.SongInfo} 
--- object contains the file's *Title*, *Author*, and *Copyright* text.
---
--- @type nwcFile
--- @field nwcItem#nwcItem Editor This contains the nwctxt Editor properties
--- @field nwcItem#nwcItem SongInfo This contains the nwctxt SongInfo properties
--- @field nwcItem#nwcItem PgSetup This contains the nwctxt PgSetup properties
--- @field nwcItem#nwcItem PgMargins This contains the nwctxt PgMargins properties
--- @field nwcItem#map_nwcItem Font This contains a table map of Font entries. Each entry is mapped by its *Style* name, and stored as a @{nwcItem#nwcItem}
--- @field #list_nwcStaff Staff This is a list of the @{#nwcStaff} objects contained in the file.
-
-----
--- nwcFile constructor.
--- Returns an object representation of a NWCTXT file.
--- @function [parent=#nwcFile] new
--- @return #nwcFile an object representation of a NWCTXT file.
-
-----
--- nwcFile load function.
--- Loads an object representation of a NWC clip or file.
--- @function [parent=#nwcFile] load
--- @param #nwcFile self nwcFile object
--- @param #function itemIterator Item iterator function used to receive the nwctxt data
-
-----
--- nwcFile save function which generates a nwctxt representation.
--- Writes an object representation of a NWC clip or file.
--- @function [parent=#nwcFile] save
--- @param #nwcFile self nwcFile object
--- @param #function writeln function used to write the nwctxt data
-
-----
--- nwcFile getSelection function returns the staff and index range for the editor selection.
--- This function assumes an empty selection should be treated as though the entire contents of the staff is selected.
--- @function [parent=#nwcFile] getSelection
--- @param #nwcFile self nwcFile object
--- @return #nwcStaff,#number,#number the active staff and selection range from left to right.
 
 return nil

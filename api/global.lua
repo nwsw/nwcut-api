@@ -210,6 +210,16 @@
 -- @field[parent = #global] nwcut#nwcut nwcut preloaded module
 
 ------------------------------------------------------------------------------
+-- nwcFile.
+-- This is the @{nwcFile} class.
+-- @field[parent = #global] nwcFile#nwcFile nwcFile preloaded module
+
+------------------------------------------------------------------------------
+-- nwcStaff.
+-- This is the @{nwcStaff} class.
+-- @field[parent = #global] nwcStaff#nwcStaff nwcStaff preloaded module
+
+------------------------------------------------------------------------------
 -- nwcItem.
 -- This is the @{nwcItem} class.
 -- @field[parent = #global] nwcItem#nwcItem nwcItem preloaded module
