@@ -54,12 +54,33 @@
 ----
 -- nwcFile forSelection function can be used apply a callback filter to all items in the selection.
 -- The callback function will be called for every item in the selection. In `clipmode`, the selection
--- will include fake items that provide context. The callback function is provided with the item object
--- and its index, and can return one of:
+-- will include fake items that provide context. The filterproc callback function is provided with the item object,
+-- its selection index, and a flag indicating the last item in the selection:
+--
+-- `filterproc(o,selIndex,isLastItem)`
+--
+-- The callback filter can return one of:
 --
 -- - a replacement item object
 -- - a list of objects that should replace the item
 -- - the string 'delete' which will cause the item to be removed from the selection
+--
+-- Here is an example:
+--
+--		local function MarkAndMuteFinalNote(o,seln,last)
+--			-- only work on last item that is a note
+--			if not (last and o:ContainsNotes()) then return end
+--		
+--			-- do nothing if note is already Muted
+--			if o:Get('Opts','Muted') then return end
+--		
+--			local txt = nwcItem.new('|Text')
+--			txt:Set('Text','Muted')
+--			o:Provide('Opts').Muted = ''
+--			return {txt,o}
+--		end
+--		
+--		score:forSelection(MarkAndMuteFinalNote)
 --
 -- @function [parent=#nwcFile] forSelection
 -- @param #nwcFile self nwcFile object

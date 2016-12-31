@@ -232,6 +232,7 @@
 -- Supported types are:
 --
 -- * "*" indicates a text response
+-- * "_" indicates a multi-line text response
 -- * "#" indicates a numeric/integer response; the range can be specified in brackets (e.g. "#[-2,5]" supports values from -2 through 5)
 -- * "|" indicates a list of items, each separated by a vertical bar (e.g. "|Note|Bar|Rest" contains a list of three elements)
 --

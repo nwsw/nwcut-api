@@ -26,6 +26,20 @@
 -- @param writeFunc The function that will be used to write the pieces that constitute the reconstructed text.
 
 -------------------------------------
+-- Retrieves the relative MIDI pitch offset associated with any accidental on the position.
+-- The offset table looks like this: `{v=-2,b=-1,n=0,['#']=1,x=2}`
+-- @function [parent=#nwcNotePos] GetAccidentalPitchOffset
+-- @param self an object.
+-- @return #string An integer offset to be applied to MIDI pitch
+
+-------------------------------------
+-- Extract the note name for the position, given the `clef` provided.
+-- @function [parent=#nwcNotePos] GetNoteName
+-- @param self an object.
+-- @param #string clef the clef type.
+-- @return #string A note name letter.
+
+-------------------------------------
 -- Provides an automatic converting to string.
 -- @function [parent=#nwcNotePos] __tostring
 -- @param self an object.
