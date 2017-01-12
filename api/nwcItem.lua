@@ -99,6 +99,21 @@
 -- @return #boolean Indicating whether this object contains a one or more note positions.
 
 -------------------------------------
+-- Returns the base duration string for a note or rest item (defined in `nwc.txt.NoteDurBase`).
+-- @function [parent=#nwcItem] NoteDurBase
+-- @param #nwcItem self an object.
+-- @param #number durVoice Which voice to get; can be 'Dur','Dur2',1,2; defaults to 'Dur'.
+-- @return #string Returns one of `nwc.txt.NoteDurBase` or nil
+
+-------------------------------------
+-- If the item is a note type, then returns the number of augmentation dots in the duration.
+-- Returns 0 in all other cases.
+-- @function [parent=#nwcItem] NoteDots
+-- @param #nwcItem self an object.
+-- @param #number durVoice Which voice to use; can be 'Dur','Dur2',1,2; defaults to 'Dur'.
+-- @return #number Returns 0, 1, or 2
+
+-------------------------------------
 -- Returns true if this object has a play back duration.
 -- Hint: grace notes do not have duration.
 -- @function [parent=#nwcItem] HasDuration
