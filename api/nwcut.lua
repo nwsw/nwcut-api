@@ -233,11 +233,13 @@
 --
 -- * "*" indicates a text response
 -- * "_" indicates a multi-line text response
--- * "#" indicates a numeric/integer response; the range can be specified in brackets (e.g. "#[-2,5]" supports values from -2 through 5)
+-- * "#" indicates a numeric/integer response; the range and spin value can be specified in brackets (e.g. "#[-2,5,1]" supports values from -2 through 5, by 1)
 -- * "|" indicates a list of items, each separated by a vertical bar (e.g. "|Note|Bar|Rest" contains a list of three elements)
+-- * "&" indicates a list of multi-selectable items, which are provided in the `listvals` parameter; the `default` must be a table of strings pre-selected strings from `listvals`; returns a table of selected strings
 --
--- @param default The default data is the user simply accepts the prompt.
--- @return the user response
+-- @param listvals For "&" multi-select lists, this is a table of strings, otherwise this parameter should not be included (optional)
+-- @param default The default data is the user simply accepts the prompt (optional)
+-- @return the user response, which can be a table, string, or number
 
 
 -------------------------------------------------------------------------------
