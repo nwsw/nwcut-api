@@ -150,7 +150,7 @@
 -- @function [parent=#nwcut] ClassifyOptTag
 -- @param #string ObjType The object type.
 -- @param #string Tag The field label.
--- @return #number Returns @{#nwcut.const.opt_Raw}, @{#nwcut.const.opt_Num}, @{#nwcut.const.opt_Text}, @{#nwcut.const.opt_List}, or @{#nwcut.const.opt_Associative}.
+-- @return #string Returns `raw`,`number`,`text`,`list`,`assoc`,`notepos`,or `utext`.
 
 -------------------------------------
 -- Calculates the MIDI pitch value at the staff center line for the provided clef type.
