@@ -128,6 +128,20 @@
 
 
 -------------------------------------
+-- Decodes a nwctxt text field.
+-- @function [parent=#nwcut] decodeText
+-- @param #string data The nwctxt data field that should be decoded.
+-- @return #string Returns the decoded string.
+
+
+-------------------------------------
+-- Encodes a text field so that it can be safely included in a nwctxt file.
+-- @function [parent=#nwcut] encodeText
+-- @param #string data The data field that should be encoded.
+-- @return #string Returns the encoded string.
+
+
+-------------------------------------
 -- Classifies a line of NWC text to assist in the processing the user tool input.
 -- @function [parent=#nwcut] ClassifyLine
 -- @param #string ln The line of input NWC text that should be classified.

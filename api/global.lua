@@ -230,11 +230,6 @@
 -- @field[parent = #global] nwcPlayContext#nwcPlayContext nwcPlayContext preloaded module
 
 ------------------------------------------------------------------------------
--- nwcOptText.
--- This is the @{nwcOptText} class.
--- @field[parent = #global] nwcOptText#nwcOptText nwcOptText preloaded module
-
-------------------------------------------------------------------------------
 -- nwcOptList.
 -- This is the @{nwcOptList} class.
 -- @field[parent = #global] nwcOptList#nwcOptList nwcOptList preloaded module
